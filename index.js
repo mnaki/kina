@@ -9,7 +9,7 @@ const search = require('youtube-search')
 const client = new Discord.Client()
 
 const env = process.env
-const isProd = env.NODE_ENV == "PRODUCTION" || env.ENV == "PRODUCTION"
+const isProd = (env.NODE_ENV === "PRODUCTION" || env.ENV === "PRODUCTION")
 
 discordLog = (txt) => client.channels.get(env.DEV_CHANNEL).send('```' + txt + '```')
 
@@ -242,7 +242,7 @@ const server = micro(async (req, res) => {
   return 'Hello world'
 })
 
-const port = isProd ? 80 : 3000
+const port = Number(env.PORT)
 const http = require("http")
 
 server.listen(port)
