@@ -59,8 +59,13 @@ const commands = {
             maxResults: 1,
             key: env.YOUTUBE_API_KEY
         }
+
+        console.log("ctx.args", ctx.args)
+        const query = ctx.args.slice(1).join(" ")
+
+        console.log("query = %s", query)
         
-        search(ctx.arg, opts, (err, results) => {
+        search(query, opts, (err, results) => {
             if (err)
             return console.log(err)
             
@@ -84,14 +89,14 @@ const commands = {
         const dict = new mwDict.CollegiateDictionary(env.MW_COLLEGIATE_API_KEY)
         // const dict = new mwDict.LearnersDictionary(env.MW_LEARNER_API_KEY)
         
-        dict.lookup(ctx.arg)
+        dict.lookup(ctx.args[1])
         .then(results => {
             results = results.slice(0, 1)
             for (result of results) {
                 console.log(result)
                 
                 const embed = new Discord.RichEmbed()
-                .setTitle(`Merriam-Webster's result for "${ctx.arg}"`)
+                .setTitle(`Merriam-Webster's result for "${ctx.args[1]}"`)
                 .setColor(0xFFFFFF)
                 
                 embed.addField("Word", result.word || "N/A")
@@ -130,9 +135,9 @@ const commands = {
     },
     
     syn: (ctx) => {
-        const results = tcom.search(ctx.arg).synonyms
+        const results = tcom.search(ctx.args[1]).synonyms
         const embed = new Discord.RichEmbed()
-        .setTitle(`Synonyms of **${ctx.arg}**`)
+        .setTitle(`Synonyms of **${ctx.args[1]}**`)
         .setColor(0xFFFFFF)
         .setDescription(results)
         
@@ -140,9 +145,9 @@ const commands = {
     },
     
     ant: (ctx) => {
-        const results = tcom.search(ctx.arg).antonyms
+        const results = tcom.search(ctx.args[1]).antonyms
         const embed = new Discord.RichEmbed()
-        .setTitle(`Antonym of **${ctx.arg}**`)
+        .setTitle(`Antonym of **${ctx.args[1]}**`)
         .setColor(0xFFFFFF)
         .setDescription(results)
         
@@ -150,14 +155,14 @@ const commands = {
     },
     
     ud: (ctx) => {
-        ud.term(ctx.arg, (err, w) => {
+        ud.term(ctx.args[1], (err, w) => {
             if (err)
             discordLog(err)
             
             console.log(w)
             
             const embed = new Discord.RichEmbed()
-            .setTitle(`Urban Dictionnary result for **${ctx.arg}**`)
+            .setTitle(`Urban Dictionnary result for **${ctx.args[1]}**`)
             .setColor(0xFFFFFF)
             .setDescription(w[0].definition)
             
@@ -166,7 +171,7 @@ const commands = {
     },
     
     prune: (ctx) => {
-        let limit = Number(ctx.arg) + 1
+        let limit = Number(ctx.args[1]) + 1
         if (limit > 100) { limit = 100 }
         console.log(limit + " messages to prune")
         ctx.msg.channel.fetchMessages({ limit: limit })
@@ -187,8 +192,8 @@ const commands = {
         .catch(console.error)
     },
     
-    unknown: ({cmd, arg, msg}) => {
-        msg.reply(`Unknown command ${cmd}`)
+    unknown: (ctx) => {
+        msg.reply(`Unknown command ${ctx.args[0]}`)
     }
     
 }
@@ -204,31 +209,41 @@ const bot = async msg => {
         return
     }
     
-    const [cmd, arg] = sscanf(msg.content, prefix + '%s %s')
-    console.log("cmd = %s\narg = %s", cmd, arg)
-    
-    const context = {
-        cmd,
-        arg,
-        msg
-    }
+    const args = sscanf(msg.content, prefix + '%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s')
+    console.log("args %s", args)
+
+    const ctx = { args, msg }
     
     if (msg.content.startsWith(prefix)) {
-        const fun = commands[cmd] || commands["unknown"]
-        fun(context)
+        const fun = commands[args[0]] || commands["unknown"]
+        try {
+            fun(ctx)            
+        } catch (error) {
+            discordLog(exc)
+            console.error(error)
+        }
     }
     
 }
 
 try {
+    client.login(env.LOGIN_TOKEN)
     client.on('message', bot)
 } catch (exc) {
     console.error(exc)
-    discordLog(exc)
 }
 
+const micro = require('micro')
+const sleep = require('then-sleep')
 
+const server = micro(async (req, res) => {
+  await sleep(500)
+  return 'Hello world'
+})
 
+server.listen(3000)
 
-
-client.login(env.LOGIN_TOKEN)
+var http = require("http");
+setInterval(function() {
+    http.get("https://nki-ikn.herokuapp.com:3000");
+}, 300000); // every 5 minutes (300000)
