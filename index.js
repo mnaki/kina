@@ -9,6 +9,7 @@ const search = require('youtube-search')
 const client = new Discord.Client()
 
 const env = process.env
+const isProd = env.NODE_ENV == "PRODUCTION" || env.ENV == "PRODUCTION"
 
 discordLog = (txt) => client.channels.get(env.DEV_CHANNEL).send('```' + txt + '```')
 
@@ -241,9 +242,15 @@ const server = micro(async (req, res) => {
   return 'Hello world'
 })
 
-server.listen(3000)
+const port = isProd ? 80 : 3000
+const http = require("http")
 
-var http = require("http");
+server.listen(port)
+
 setInterval(function() {
-    http.get("https://nki-ikn.herokuapp.com:3000");
-}, 300000); // every 5 minutes (300000)
+    if (isProd) {
+        http.get(`https://nki-ikn.herokuapp.com:${port}`)
+    } else {
+        http.get(`https://localhost:${port}`)
+    }
+}, 1000 * 60 * 5)
