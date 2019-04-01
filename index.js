@@ -7,6 +7,7 @@ const ud = require('urban-dictionary')
 const mwDict = require('mw-dict')
 const search = require('youtube-search')
 const client = new Discord.Client()
+const he = require('he')
 
 const env = process.env
 const isProd = (env.NODE_ENV === "PRODUCTION" || env.ENV === "PRODUCTION")
@@ -21,7 +22,7 @@ client.on('ready', () => {
     // discordLog(`Logged in as ${client.user.tag}!`)
 })
 
-const PRUNE_STEP_TIME = 100
+const PRUNE_STEP_TIME = 50
 
 const isMentioned = (msg, client) => msg.mentions.users.find(u => u.discriminator == client.user.discriminator)
 
@@ -88,9 +89,9 @@ const commands = {
                 const result = results[0]
                 
                 const embed = new Discord.RichEmbed()
-                .setTitle(result.title)
+                .setTitle(he.decode(result.title))
                 .setThumbnail(result.thumbnails.medium.url)
-                .setDescription(result.description)
+                .setDescription(he.decode(result.description))
                 .setURL(result.link)
                 .setColor(0xEE0000)
                 

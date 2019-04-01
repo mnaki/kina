@@ -6,6 +6,7 @@
   "dependencies": {
     "discord.js": "^11.4.2",
     "forever": "^0.15.4",
+    "he": "^1.2.0",
     "micro": "^9.3.3",
     "mw-dict": "^3.0.0",
     "sscanf": "^0.8.0",
