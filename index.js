@@ -72,7 +72,7 @@ const commands = {
             
             const opts = {
                 maxResults: 1,
-                key: env.YOUTUBE_API_KEY
+                key: ctx.env.YOUTUBE_API_KEY
             }
             
             console.log("ctx.args", ctx.args)
@@ -107,8 +107,8 @@ const commands = {
             example: "Merriam-Webster",
         },
         fun: (ctx) => {
-            const dict = new mwDict.CollegiateDictionary(env.MW_COLLEGIATE_API_KEY)
-            // const dict = new mwDict.LearnersDictionary(env.MW_LEARNER_API_KEY)
+            const dict = new mwDict.CollegiateDictionary(ctx.env.MW_COLLEGIATE_API_KEY)
+            // const dict = new mwDict.LearnersDictionary(ctx.env.MW_LEARNER_API_KEY)
             
             dict.lookup(ctx.args[1])
             .then(results => {
@@ -311,7 +311,8 @@ const bot = async msg => {
     const ctx = {
         args,
         msg,
-        urls
+        urls,
+        env
     }
     
     if (msg.content.startsWith(prefix)) {
