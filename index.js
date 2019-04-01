@@ -344,13 +344,14 @@ const server = micro(async (req, res) => {
 })
 
 const port = Number(env.PORT)
+const https = require("https")
 const http = require("http")
 
 server.listen(port)
 
 setInterval(function() {
     if (isProd) {
-        http.get(`https://nki-ikn.herokuapp.com:${port}`)
+        https.get(`https://nki-ikn.herokuapp.com:${port}`)
     } else {
         http.get(`http://localhost:${port}`)
     }
