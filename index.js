@@ -350,10 +350,14 @@ const http = require("http")
 
 server.listen(port)
 
-setInterval(function() {
+setInterval(() => {
     if (isProd) {
         https.get(`https://nki-ikn.herokuapp.com:${port}`)
     } else {
         http.get(`http://localhost:${port}`)
     }
 }, 1000 * 60 * 5)
+
+process.on('uncaughtException', (err) => {
+    console.log(err);
+}); 
