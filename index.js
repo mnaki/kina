@@ -14,18 +14,14 @@ const isProd = (env.NODE_ENV === "PRODUCTION" || env.ENV === "PRODUCTION")
 discordLog = (txt) => client.channels.get(env.DEV_CHANNEL).send('```' + txt + '```')
 linkify = text => text.match(/\bhttps?:\/\/\S+/gi)
 
-const delay = (t) => {
-    return function (f) {
-        setTimeout(f, t)
-    }
-}
+const delay = (t) => (f) => { setTimeout(f, t) }
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`)
     // discordLog(`Logged in as ${client.user.tag}!`)
 })
 
-const PRUNE_STEP_TIME = 250
+const PRUNE_STEP_TIME = 100
 
 const isMentioned = (msg, client) => msg.mentions.users.find(u => u.discriminator == client.user.discriminator)
 
@@ -60,7 +56,7 @@ const commands = {
                 const description = commands[i].doc.description
                 const example = commands[i].doc.example
                 if (!!description && description.length > 3 && !!example && example.length > 3)
-                embed.addField(description, example, false)
+                embed.addField(example, description, false)
             }
             
             ctx.msg.channel.send(embed)
