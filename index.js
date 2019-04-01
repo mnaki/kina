@@ -38,8 +38,8 @@ const commands = {
     
     ping: {
         doc: {
-                example: "ping",
-                description: "Ping pong",
+            description: "ping",
+            example: "Ping pong",
         },
         fun: (ctx) => {
             ctx.msg.reply("pong")
@@ -48,8 +48,8 @@ const commands = {
     
     help: {
         doc: {
-                example: "help",
-                description: "Displays this panel",
+            description: "help",
+            example: "Displays this panel",
         },
         fun: (ctx) => {
             const embed = new Discord.RichEmbed()
@@ -57,7 +57,10 @@ const commands = {
             .setColor(0xFFFFFF)
             
             for (let i in commands) {
-                embed.addField(commands[i].doc.example, commands[i].doc.description, false)
+                const description = commands[i].doc.description
+                const example = commands[i].doc.example
+                if (!!description && description.length > 3 !!example && example.length > 3)
+                embed.addField(description, example, false)
             }
             
             ctx.msg.channel.send(embed)
@@ -66,8 +69,8 @@ const commands = {
     
     yt: {
         doc: {
-                example: "yt [word]",
-                description: "Youtube Search",
+            description: "yt [word]",
+            example: "Youtube Search",
         },
         fun: (ctx) => {
             
@@ -104,8 +107,8 @@ const commands = {
     
     mw: {
         doc: {
-                example: "mw [word]",
-                description: "Merriam-Webster",
+            description: "mw [word]",
+            example: "Merriam-Webster",
         },
         fun: (ctx) => {
             const dict = new mwDict.CollegiateDictionary(env.MW_COLLEGIATE_API_KEY)
@@ -159,8 +162,8 @@ const commands = {
     
     syn: {
         doc: {
-                example: "syn [word]",
-                description: "Thesaurus.com synonym",
+            description: "syn [word]",
+            example: "Thesaurus.com synonym",
         },
         fun: (ctx) => {
             const results = tcom.search(ctx.args[1]).synonyms
@@ -175,8 +178,8 @@ const commands = {
     
     ant: {
         doc: {
-                example: "ant [word]",
-                description: "Thesaurus.com antonyms",
+            description: "ant [word]",
+            example: "Thesaurus.com antonyms",
         },
         fun: (ctx) => {
             const results = tcom.search(ctx.args[1]).antonyms
@@ -191,8 +194,8 @@ const commands = {
     
     ud: {
         doc: {
-                example: "ud [word]",
-                description: "Urban dictionary definition",
+            description: "ud [word]",
+            example: "Urban dictionary definition",
         },
         fun: (ctx) => {
             ud.term(ctx.args[1], (err, w) => {
@@ -210,14 +213,14 @@ const commands = {
             })
         }
     },
-
+    
     tineye: {
         doc: {
-            example: "Placeholder",
-            description: "Placeholder"
+            description: "",
+            example: "Placeholder"
         },
         fun: (ctx) => {
-
+            
             ctx.msg.channel.fetchMessages({ limit: 3 })
             .then(messages => {
                 const urls = []
@@ -236,8 +239,8 @@ const commands = {
     
     prune: {
         doc: {
-                example: "prune [number] [user snowflake]",
-                description: "Prune last X messages",
+            description: "prune [number] [user snowflake]",
+            example: "Prune last X messages",
         },
         fun: (ctx) => {
             console.log("Pruning...")
@@ -284,8 +287,7 @@ const commands = {
     
     unknown: {
         doc: {
-                example: "Placeholder",
-                description: "Placeholder",
+            description: "Placeholder",
         },
         fun: (ctx) => {
             msg.reply(`Unknown command ${ctx.args[0]}`)
@@ -307,7 +309,7 @@ const bot = async msg => {
     
     const args = sscanf(msg.content, prefix + '%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s')
     console.log("args %s", args)
-
+    
     urls = linkify(msg.content)
     
     const ctx = {
