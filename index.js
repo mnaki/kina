@@ -59,7 +59,7 @@ const commands = {
             for (let i in commands) {
                 const description = commands[i].doc.description
                 const example = commands[i].doc.example
-                if (!!description && description.length > 3 !!example && example.length > 3)
+                if (!!description && description.length > 3 && !!example && example.length > 3)
                 embed.addField(description, example, false)
             }
             
