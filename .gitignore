@@ -82,3 +82,6 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+# Random
+test.js

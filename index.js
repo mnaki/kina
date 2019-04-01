@@ -12,6 +12,7 @@ const env = process.env
 const isProd = (env.NODE_ENV === "PRODUCTION" || env.ENV === "PRODUCTION")
 
 discordLog = (txt) => client.channels.get(env.DEV_CHANNEL).send('```' + txt + '```')
+linkify = text => text.match(/\bhttps?:\/\/\S+/gi)
 
 const delay = (t) => {
     return function (f) {
@@ -209,6 +210,29 @@ const commands = {
             })
         }
     },
+
+    tineye: {
+        doc: {
+            example: "Placeholder",
+            description: "Placeholder"
+        },
+        fun: (ctx) => {
+
+            ctx.msg.channel.fetchMessages({ limit: 3 })
+            .then(messages => {
+                const urls = []
+                const contents = messages.map(m => m.content)
+                for (content of contents) {
+                    const link = linkify(content)
+                    if (!!link) {
+                        urls.push(link)
+                    }
+                }
+                const url = urls.flat().reverse()[0]
+                ctx.msg.reply(`url = ${url}`)
+            })
+        }
+    },
     
     prune: {
         doc: {
@@ -231,8 +255,9 @@ const commands = {
             .then(messages => {
                 let i = 0
                 messages.filter((message) => {
-                    if (!userSnowflake)
-                        return message;
+                    if (!userSnowflake) {
+                        return message
+                    }
                     console.log("message.author = %s", message.author)
                     console.log("message.author.id == userSnowflake")
                     if (message.author.id == userSnowflake)
@@ -282,13 +307,18 @@ const bot = async msg => {
     
     const args = sscanf(msg.content, prefix + '%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s')
     console.log("args %s", args)
+
+    urls = linkify(msg.content)
     
-    const ctx = { args, msg }
+    const ctx = {
+        args,
+        msg,
+        urls
+    }
     
     if (msg.content.startsWith(prefix)) {
         console.log("args[0] = %s", args[0])
         console.log("commands[args[0]] = %s", commands[args[0]])
-        console.log("commands[args[0]].fun = %s", commands[args[0]].fun)
         const fun = commands[args[0]].fun || commands["unknown"].fun
         try {
             fun(ctx)
@@ -324,6 +354,6 @@ setInterval(function() {
     if (isProd) {
         http.get(`https://nki-ikn.herokuapp.com:${port}`)
     } else {
-        http.get(`https://localhost:${port}`)
+        http.get(`http://localhost:${port}`)
     }
 }, 1000 * 60 * 5)
