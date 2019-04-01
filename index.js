@@ -30,172 +30,242 @@ const isMentioned = (msg, client) => msg.mentions.users.find(u => u.discriminato
 
 const limitText = (text, limit) => (text || "").split("").splice(0, limit).join("")
 
-const DOC = {
-    "mw [word]": "Merriam-Webster",
-    "syn [word]": "Thesaurus.com synonym",
-    "ant [word]": "Thesaurus.com antonyms",
-    "ud [word]": "Urban dictionary definition",
-    "prune [number]": "Prune last X messages"
-}
 
 const prefix = ".."
 
 const commands = {
     
-    help: (ctx) => {
-        const embed = new Discord.RichEmbed()
-        .setTitle(`Command summary for ikan bot`)
-        .setColor(0xFFFFFF)
-        
-        for (let i in DOC) {
-            embed.addField(String(DOC[i]), prefix + String(i), false)
+    ping: {
+        doc: {
+                example: "ping",
+                description: "Ping pong",
+        },
+        fun: (ctx) => {
+            ctx.msg.reply("pong")
         }
-        
-        ctx.msg.channel.send(embed)
     },
     
-    yt: (ctx) => {
-        
-        const opts = {
-            maxResults: 1,
-            key: env.YOUTUBE_API_KEY
-        }
-
-        console.log("ctx.args", ctx.args)
-        const query = ctx.args.slice(1).join(" ")
-
-        console.log("query = %s", query)
-        
-        search(query, opts, (err, results) => {
-            if (err)
-            return console.log(err)
-            
-            console.log(results)
-            const result = results[0]
-            
+    help: {
+        doc: {
+                example: "help",
+                description: "Displays this panel",
+        },
+        fun: (ctx) => {
             const embed = new Discord.RichEmbed()
-            .setTitle(result.title)
-            .setThumbnail(result.thumbnails.medium.url)
-            .setDescription(result.description)
-            .setURL(result.link)
-            .setColor(0xEE0000)
+            .setTitle(`Command summary for ikan bot`)
+            .setColor(0xFFFFFF)
+            
+            for (let i in commands) {
+                embed.addField(commands[i].doc.example, commands[i].doc.description, false)
+            }
             
             ctx.msg.channel.send(embed)
-            
-        })
-        
+        }
     },
     
-    mw: (ctx) => {
-        const dict = new mwDict.CollegiateDictionary(env.MW_COLLEGIATE_API_KEY)
-        // const dict = new mwDict.LearnersDictionary(env.MW_LEARNER_API_KEY)
-        
-        dict.lookup(ctx.args[1])
-        .then(results => {
-            results = results.slice(0, 1)
-            for (result of results) {
-                console.log(result)
+    yt: {
+        doc: {
+                example: "yt [word]",
+                description: "Youtube Search",
+        },
+        fun: (ctx) => {
+            
+            const opts = {
+                maxResults: 1,
+                key: env.YOUTUBE_API_KEY
+            }
+            
+            console.log("ctx.args", ctx.args)
+            const query = ctx.args.slice(1).join(" ")
+            
+            console.log("query = %s", query)
+            
+            search(query, opts, (err, results) => {
+                if (err)
+                return console.log(err)
+                
+                console.log(results)
+                const result = results[0]
                 
                 const embed = new Discord.RichEmbed()
-                .setTitle(`Merriam-Webster's result for "${ctx.args[1]}"`)
-                .setColor(0xFFFFFF)
-                
-                embed.addField("Word", result.word || "N/A")
-                embed.addField("Functional label", result.functional_label || "N/A")
-                embed.addField("Etymology", result.etymology || "N/A")
-                embed.addField("Popularity", result.popularity || "N/A")
-                
-                result.definition.map((sense) => {
-                    
-                    if (sense.meanings && sense.meanings.length > 5) {
-                        embed.addField("Meaning", sense.meanings)
-                    }
-                    
-                    if (sense.synonyms && sense.synonyms.length > 0) {
-                        embed.addField("Synonyms", sense.synonyms.join(', '))
-                    }
-                    
-                    if (sense.antonyms && sense.antonyms.length > 0) {
-                        embed.addField("Antonyms", sense.antonyms)
-                    }
-                    
-                    if (sense.illustrations && sense.illustrations.length > 0) {
-                        embed.addField("Illustrations", sense.illustrations)
-                    }
-                    
-                })
+                .setTitle(result.title)
+                .setThumbnail(result.thumbnails.medium.url)
+                .setDescription(result.description)
+                .setURL(result.link)
+                .setColor(0xEE0000)
                 
                 ctx.msg.channel.send(embed)
-            }
-        })
-        .catch(error => {
-            discordLog(error)
-            ctx.msg.reply(error)
-            console.error(error)
-        })
-    },
-    
-    syn: (ctx) => {
-        const results = tcom.search(ctx.args[1]).synonyms
-        const embed = new Discord.RichEmbed()
-        .setTitle(`Synonyms of **${ctx.args[1]}**`)
-        .setColor(0xFFFFFF)
-        .setDescription(results)
-        
-        ctx.msg.channel.send(embed)
-    },
-    
-    ant: (ctx) => {
-        const results = tcom.search(ctx.args[1]).antonyms
-        const embed = new Discord.RichEmbed()
-        .setTitle(`Antonym of **${ctx.args[1]}**`)
-        .setColor(0xFFFFFF)
-        .setDescription(results)
-        
-        ctx.msg.channel.send(embed)
-    },
-    
-    ud: (ctx) => {
-        ud.term(ctx.args[1], (err, w) => {
-            if (err)
-            discordLog(err)
+                
+            })
             
-            console.log(w)
+        }
+    },
+    
+    mw: {
+        doc: {
+                example: "mw [word]",
+                description: "Merriam-Webster",
+        },
+        fun: (ctx) => {
+            const dict = new mwDict.CollegiateDictionary(env.MW_COLLEGIATE_API_KEY)
+            // const dict = new mwDict.LearnersDictionary(env.MW_LEARNER_API_KEY)
             
+            dict.lookup(ctx.args[1])
+            .then(results => {
+                results = results.slice(0, 1)
+                for (result of results) {
+                    console.log(result)
+                    
+                    const embed = new Discord.RichEmbed()
+                    .setTitle(`Merriam-Webster's result for "${ctx.args[1]}"`)
+                    .setColor(0xFFFFFF)
+                    
+                    embed.addField("Word", result.word || "N/A")
+                    embed.addField("Functional label", result.functional_label || "N/A")
+                    embed.addField("Etymology", result.etymology || "N/A")
+                    embed.addField("Popularity", result.popularity || "N/A")
+                    
+                    result.definition.map((sense) => {
+                        
+                        if (sense.meanings && sense.meanings.length > 5) {
+                            embed.addField("Meaning", sense.meanings)
+                        }
+                        
+                        if (sense.synonyms && sense.synonyms.length > 0) {
+                            embed.addField("Synonyms", sense.synonyms.join(', '))
+                        }
+                        
+                        if (sense.antonyms && sense.antonyms.length > 0) {
+                            embed.addField("Antonyms", sense.antonyms)
+                        }
+                        
+                        if (sense.illustrations && sense.illustrations.length > 0) {
+                            embed.addField("Illustrations", sense.illustrations)
+                        }
+                        
+                    })
+                    
+                    ctx.msg.channel.send(embed)
+                }
+            })
+            .catch(error => {
+                discordLog(error)
+                ctx.msg.reply(error)
+                console.error(error)
+            })
+        }
+    },
+    
+    syn: {
+        doc: {
+                example: "syn [word]",
+                description: "Thesaurus.com synonym",
+        },
+        fun: (ctx) => {
+            const results = tcom.search(ctx.args[1]).synonyms
             const embed = new Discord.RichEmbed()
-            .setTitle(`Urban Dictionnary result for **${ctx.args[1]}**`)
+            .setTitle(`Synonyms of **${ctx.args[1]}**`)
             .setColor(0xFFFFFF)
-            .setDescription(w[0].definition)
+            .setDescription(results)
             
             ctx.msg.channel.send(embed)
-        })
+        }
     },
     
-    prune: (ctx) => {
-        let limit = Number(ctx.args[1]) + 1
-        if (limit > 100) { limit = 100 }
-        console.log(limit + " messages to prune")
-        ctx.msg.channel.fetchMessages({ limit: limit })
-        .then(messages => {
-            let i = 0
-            messages.map((message) => {
-                console.log("i = " + i)
-                const timeout = PRUNE_STEP_TIME * Number(i)
-
-                delay(timeout)(() => {
-                    console.log(`Deleting "${message.id} after ${timeout} sec"`)
-                    message.delete()
-                })
+    ant: {
+        doc: {
+                example: "ant [word]",
+                description: "Thesaurus.com antonyms",
+        },
+        fun: (ctx) => {
+            const results = tcom.search(ctx.args[1]).antonyms
+            const embed = new Discord.RichEmbed()
+            .setTitle(`Antonym of **${ctx.args[1]}**`)
+            .setColor(0xFFFFFF)
+            .setDescription(results)
+            
+            ctx.msg.channel.send(embed)
+        }
+    },
+    
+    ud: {
+        doc: {
+                example: "ud [word]",
+                description: "Urban dictionary definition",
+        },
+        fun: (ctx) => {
+            ud.term(ctx.args[1], (err, w) => {
+                if (err)
+                discordLog(err)
                 
-                i = i + 1
+                console.log(w)
+                
+                const embed = new Discord.RichEmbed()
+                .setTitle(`Urban Dictionnary result for **${ctx.args[1]}**`)
+                .setColor(0xFFFFFF)
+                .setDescription(w[0].definition)
+                
+                ctx.msg.channel.send(embed)
             })
-        })
-        .catch(console.error)
+        }
     },
     
-    unknown: (ctx) => {
-        msg.reply(`Unknown command ${ctx.args[0]}`)
-    }
+    prune: {
+        doc: {
+                example: "prune [number] [user snowflake]",
+                description: "Prune last X messages",
+        },
+        fun: (ctx) => {
+            console.log("Pruning...")
+            console.log("ctx.args = %s", ctx.args)
+            const userSnowflake = ctx.args[2] && ctx.args[2].length > 3 && String(ctx.args[2])
+            console.log("user = %s", userSnowflake)
+            
+            let limit = Number(ctx.args[1]) + 1
+            if (limit > 100) {
+                limit = 100
+            }
+            console.log(limit + " messages to prune")
+            
+            ctx.msg.channel.fetchMessages({ limit: limit })
+            .then(messages => {
+                let i = 0
+                messages.filter((message) => {
+                    if (!userSnowflake)
+                        return message;
+                    console.log("message.author = %s", message.author)
+                    console.log("message.author.id == userSnowflake")
+                    if (message.author.id == userSnowflake)
+                    console.log("%d == %d", message.author.id, userSnowflake)
+                    else
+                    console.log("%d != %d", message.author.id, userSnowflake)
+                    return message.author.id == userSnowflake
+                })
+                .map((message) => {
+                    console.log("i = " + i)
+                    const timeout = PRUNE_STEP_TIME * Number(i)
+                    
+                    delay(timeout)(() => {
+                        console.log(`Deleting "${message.id} after ${timeout} sec"`)
+                        message.delete()
+                    })
+                    
+                    i = i + 1
+                })
+            })
+            .catch(console.error)
+        }
+    },
+    
+    unknown: {
+        doc: {
+                example: "Placeholder",
+                description: "Placeholder",
+        },
+        fun: (ctx) => {
+            msg.reply(`Unknown command ${ctx.args[0]}`)
+        }
+    },
     
 }
 
@@ -212,13 +282,16 @@ const bot = async msg => {
     
     const args = sscanf(msg.content, prefix + '%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s')
     console.log("args %s", args)
-
+    
     const ctx = { args, msg }
     
     if (msg.content.startsWith(prefix)) {
-        const fun = commands[args[0]] || commands["unknown"]
+        console.log("args[0] = %s", args[0])
+        console.log("commands[args[0]] = %s", commands[args[0]])
+        console.log("commands[args[0]].fun = %s", commands[args[0]].fun)
+        const fun = commands[args[0]].fun || commands["unknown"].fun
         try {
-            fun(ctx)            
+            fun(ctx)
         } catch (error) {
             discordLog(exc)
             console.error(error)
@@ -238,8 +311,8 @@ const micro = require('micro')
 const sleep = require('then-sleep')
 
 const server = micro(async (req, res) => {
-  await sleep(500)
-  return 'Hello world'
+    await sleep(500)
+    return 'Hello world'
 })
 
 const port = Number(env.PORT)
