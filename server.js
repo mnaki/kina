@@ -1,9 +1,11 @@
 const micro = require('micro')
 const sleep = require('then-sleep')
-const http = require("http")
+if (process.env.NOW == "1")
+    http = require("https")
+else
+    http = require("http")
 
 const server = micro(async (req, res) => {
-    await sleep(500)
     return 'Hello world'
 })
 
