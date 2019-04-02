@@ -22,11 +22,14 @@ ping = (domain, port, cb) => {
     })
 }
 
-module.exports = function ({ domain, port }, cb) {
-    const err = null
+module.exports = {
+    server: server,
+    start: function ({ domain, port }, cb) {
+        const err = null
 
-    server.listen(port)
-    server.ping = (cb2) => ping(domain, port, cb2)
+        server.listen(port)
+        server.ping = (cb2) => ping(domain, port, cb2)
 
-    cb(err, server)
+        cb(err, server)
+    }
 }

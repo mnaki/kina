@@ -1,10 +1,14 @@
 const assert = require('assert')
 
-const server = require("./server")
+const handle = require("./server")
 
 describe('Server', function () {
+    afterEach(function () {
+        handle.server.close()
+    })
+
     it('should ping server', function (done) {
-        server({
+        handle.start({
             domain: process.env.DOMAIN,
             port: process.env.PORT
         }, (err, server) => {

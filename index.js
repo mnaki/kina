@@ -338,9 +338,9 @@ try {
 
 // Server
 
-const server = require("./server")
+const handle = require("./server")
 
-server({ domain: env.DOMAIN, port: env.PORT }, (err, server) => {
+handle.start({ domain: env.DOMAIN, port: env.PORT }, (err, server) => {
     if (err) {
         console.error(err)
     }
