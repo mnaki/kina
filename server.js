@@ -1,6 +1,6 @@
 const micro = require('micro')
 const sleep = require('then-sleep')
-const http = require("http")
+const https = require("https")
 
 const server = micro(async (req, res) => {
     await sleep(500)
@@ -8,7 +8,7 @@ const server = micro(async (req, res) => {
 })
 
 ping = (domain, port, cb) => {
-    http.get({
+    https.get({
         host: domain,
         port: port,
         path: '/'
