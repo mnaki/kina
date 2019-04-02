@@ -1,4 +1,4 @@
-/*const assert = require('assert')
+const assert = require('assert')
 
 const handle = require("./server")
 
@@ -9,7 +9,7 @@ describe('Server', function () {
 
     it('should ping server', function (done) {
         handle.start({
-            domain: process.env.DOMAIN,
+            domain: process.env.NOW_URL || process.env.DOMAIN,
             port: process.env.PORT
         }, (err, server) => {
             assert.ok(!err)
@@ -21,4 +21,3 @@ describe('Server', function () {
         })
     })
 })
-*/

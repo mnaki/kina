@@ -17,7 +17,7 @@ linkify = text => text.match(/\bhttps?:\/\/\S+/gi)
 const delay = (t) => (f) => { setTimeout(f, t) }
 
 client.on('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`)
+    // console.log(`Logged in as ${client.user.tag}!`)
     // discordLog(`Logged in as ${client.user.tag}!`)
 })
 
@@ -75,16 +75,16 @@ const commands = {
                 key: ctx.env.YOUTUBE_API_KEY
             }
             
-            console.log("ctx.args", ctx.args)
+            // console.log("ctx.args", ctx.args)
             const query = ctx.args.slice(1).join(" ")
             
-            console.log("query = %s", query)
+            // console.log("query = %s", query)
             
             search(query, opts, (err, results) => {
                 if (err)
-                return console.log(err)
+                return console.error(err)
                 
-                console.log(results)
+                // console.log(results)
                 const result = results[0]
                 
                 const embed = new Discord.RichEmbed()
@@ -114,7 +114,7 @@ const commands = {
             .then(results => {
                 results = results.slice(0, 1)
                 for (result of results) {
-                    console.log(result)
+                    // console.log(result)
                     
                     const embed = new Discord.RichEmbed()
                     .setTitle(`Merriam-Webster's result for "${ctx.args[1]}"`)
@@ -198,7 +198,7 @@ const commands = {
                 if (err)
                 discordLog(err)
                 
-                console.log(w)
+                // console.log(w)
                 
                 const embed = new Discord.RichEmbed()
                 .setTitle(`Urban Dictionnary result for **${ctx.args[1]}**`)
@@ -239,16 +239,16 @@ const commands = {
             example: "Prune last X messages",
         },
         fun: (ctx) => {
-            console.log("Pruning...")
-            console.log("ctx.args = %s", ctx.args)
+            // console.log("Pruning...")
+            // console.log("ctx.args = %s", ctx.args)
             const userSnowflake = ctx.args[2] && ctx.args[2].length > 3 && String(ctx.args[2])
-            console.log("user = %s", userSnowflake)
+            // console.log("user = %s", userSnowflake)
             
             let limit = Number(ctx.args[1]) + 1
             if (limit > 100) {
                 limit = 100
             }
-            console.log(limit + " messages to prune")
+            // console.log(limit + " messages to prune")
             
             ctx.msg.channel.fetchMessages({ limit: limit })
             .then(messages => {
@@ -257,20 +257,20 @@ const commands = {
                     if (!userSnowflake) {
                         return message
                     }
-                    console.log("message.author = %s", message.author)
-                    console.log("message.author.id == userSnowflake")
+                    // console.log("message.author = %s", message.author)
+                    // console.log("message.author.id == userSnowflake")
                     if (message.author.id == userSnowflake)
-                    console.log("%d == %d", message.author.id, userSnowflake)
+                    // console.log("%d == %d", message.author.id, userSnowflake)
                     else
-                    console.log("%d != %d", message.author.id, userSnowflake)
+                    // console.log("%d != %d", message.author.id, userSnowflake)
                     return message.author.id == userSnowflake
                 })
                 .map((message) => {
-                    console.log("i = " + i)
+                    // console.log("i = " + i)
                     const timeout = PRUNE_STEP_TIME * Number(i)
                     
                     delay(timeout)(() => {
-                        console.log(`Deleting "${message.id} after ${timeout} sec"`)
+                        // console.log(`Deleting "${message.id} after ${timeout} sec"`)
                         message.delete()
                     })
                     
@@ -304,7 +304,7 @@ const bot = async msg => {
     }
     
     const args = sscanf(msg.content, prefix + '%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s')
-    console.log("args %s", args)
+    // console.log("args %s", args)
     
     urls = linkify(msg.content)
     
@@ -316,8 +316,8 @@ const bot = async msg => {
     }
     
     if (msg.content.startsWith(prefix)) {
-        console.log("args[0] = %s", args[0])
-        console.log("commands[args[0]] = %s", commands[args[0]])
+        // console.log("args[0] = %s", args[0])
+        // console.log("commands[args[0]] = %s", commands[args[0]])
         const fun = commands[args[0]].fun || commands["unknown"].fun
         try {
             fun(ctx)
@@ -338,24 +338,24 @@ try {
 
 // Server
 
-/*
+
 const handle = require("./server")
 
-handle.start({ domain: env.DOMAIN, port: env.PORT }, (err, server) => {
+handle.start({ domain: env.NOW_URL || env.DOMAIN, port: env.PORT }, (err, server) => {
     if (err) {
         console.error(err)
     }
-    setInterval(() => server.ping((err, data) => {
+    /*setInterval(() => server.ping((err, data) => {
         if (err) {
             console.error(err)
         }
-        console.log(data)
-    }), 1000 * 60 * 5)
+        // console.log(data)
+    }), 1000 * 60 * 5)*/
 })
-*/
+
 
 // Misc
 
 process.on('uncaughtException', (err) => {
-    console.log(err)
+    console.error(err)
 }) 
