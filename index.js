@@ -346,18 +346,13 @@ const server = micro(async (req, res) => {
 })
 
 const port = Number(env.PORT)
-const https = require("https")
 const http = require("http")
 
 server.listen(port)
 
 setInterval(() => {
-    if (isProd) {
-        https.get(`https://nki-ikn.herokuapp.com:${port}`)
-    } else {
-        http.get(`http://localhost:${port}`)
-    }
-}, 1000 * 60 * 5)
+    http.get(isProd ? `https://nki-ikn.herokuapp.com:${port}` : `http://localhost:${port}`)
+}, 1000 * 60 * 1)
 
 process.on('uncaughtException', (err) => {
     console.log(err);
