@@ -23,7 +23,7 @@ describe('Server', function () {
             port: process.env.PORT
         }, (err, server) => {
             server.ping((err, data) => {
-                console.log(err)
+                console.err(err)
                 assert.ok(!err)
                 done()
             })
