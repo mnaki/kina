@@ -84,4 +84,4 @@ typings/
 .dynamodb/
 
 # Random
-test.js
+scratchpad.js

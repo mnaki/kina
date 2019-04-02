@@ -10,7 +10,6 @@ const client = new Discord.Client()
 const he = require('he')
 
 const env = process.env
-const isProd = (env.NODE_ENV === "PRODUCTION" || env.ENV === "PRODUCTION")
 
 discordLog = (txt) => client.channels.get(env.DEV_CHANNEL).send('```' + txt + '```')
 linkify = text => text.match(/\bhttps?:\/\/\S+/gi)
@@ -337,23 +336,28 @@ try {
     console.error(exc)
 }
 
-const micro = require('micro')
-const sleep = require('then-sleep')
+// Server
 
-const server = micro(async (req, res) => {
-    await sleep(500)
-    return 'Hello world'
+const server = require("./server")
+
+server({ domain: env.DOMAIN, port: env.PORT }, (err, server) => {
+    if (err) {
+        console.error(err)
+    }
+    
+    const pingServ = () => server.ping((err, data) => {
+        if (err) {
+            console.error(err)
+        }
+        console.log(data)
+    })
+
+    pingServ()
+    setInterval(pingServ, 1000 * 60 * 5)
 })
 
-const port = Number(env.PORT)
-const http = require("http")
-
-server.listen(port)
-
-setInterval(() => {
-    http.get(isProd ? `http://nki-ikn.herokuapp.com:${port}` : `http://localhost:${port}`)
-}, 1000 * 60 * 1)
+// Misc
 
 process.on('uncaughtException', (err) => {
-    console.log(err);
-}); 
+    console.log(err)
+}) 
