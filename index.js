@@ -344,16 +344,12 @@ handle.start({ domain: env.DOMAIN, port: env.PORT }, (err, server) => {
     if (err) {
         console.error(err)
     }
-    
-    const pingServ = () => server.ping((err, data) => {
+    setInterval(() => server.ping((err, data) => {
         if (err) {
             console.error(err)
         }
         console.log(data)
-    })
-
-    pingServ()
-    setInterval(pingServ, 1000 * 60 * 5)
+    }), 1000 * 60 * 5)
 })
 
 // Misc
