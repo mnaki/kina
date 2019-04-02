@@ -351,7 +351,7 @@ const http = require("http")
 server.listen(port)
 
 setInterval(() => {
-    http.get(isProd ? `https://nki-ikn.herokuapp.com:${port}` : `http://localhost:${port}`)
+    http.get(isProd ? `http://nki-ikn.herokuapp.com:${port}` : `http://localhost:${port}`)
 }, 1000 * 60 * 1)
 
 process.on('uncaughtException', (err) => {
