@@ -1,4 +1,4 @@
-const micro = require('micro')
+/*const micro = require('micro')
 const sleep = require('then-sleep')
 const https = require("https")
 
@@ -32,4 +32,4 @@ module.exports = {
 
         cb(err, server)
     }
-}
+}*/

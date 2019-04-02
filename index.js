@@ -338,6 +338,7 @@ try {
 
 // Server
 
+/*
 const handle = require("./server")
 
 handle.start({ domain: env.DOMAIN, port: env.PORT }, (err, server) => {
@@ -351,6 +352,7 @@ handle.start({ domain: env.DOMAIN, port: env.PORT }, (err, server) => {
         console.log(data)
     }), 1000 * 60 * 5)
 })
+*/
 
 // Misc
 

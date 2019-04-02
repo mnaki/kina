@@ -1,4 +1,4 @@
-const assert = require('assert')
+/*const assert = require('assert')
 
 const handle = require("./server")
 
@@ -21,3 +21,4 @@ describe('Server', function () {
         })
     })
 })
+*/
