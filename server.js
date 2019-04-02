@@ -27,7 +27,7 @@ module.exports = {
     start: function ({ domain, port }, cb) {
         const err = null
 
-        server.listen(port)
+        server.listen(port, domain)
         server.ping = (cb2) => ping(domain, port, cb2)
 
         cb(err, server)
