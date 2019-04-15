@@ -54,7 +54,6 @@ const botEvent = async msg => {
     
     if (msg.content.startsWith(prefix)) {
         const commands = commandManager.commands
-        console.log("commands = %o", commands)
         const fun = commands[args[0]].fun || commands["unknown"].fun
         try {
             fun(ctx)
