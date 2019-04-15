@@ -2734,6 +2734,10 @@ winston@0.8.x, winston@~0.8.1:
     pkginfo "0.3.x"
     stack-trace "0.0.x"
 
+worder@^1.0.13:
+  version "1.0.13"
+  resolved "https://registry.yarnpkg.com/worder/-/worder-1.0.13.tgz#16dcfedd2f45f83faee8a9e9fd510f12a59a8965"
+
 "wordwrap@>=0.0.1 <0.1.0", wordwrap@~0.0.2:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-0.0.3.tgz#a3d5da6cd5c0bc0008d37234bbaf1bed63059107"
