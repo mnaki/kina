@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "discord.js": "^11.4.2",
-    "forever": "^0.15.4",
+    "forever": "^1.0.0",
     "he": "^1.2.0",
     "http": "^0.0.0",
     "micro": "^9.3.3",

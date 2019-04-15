@@ -1,5 +1,4 @@
 const assert = require('assert')
-
 const handle = require("./server")
 
 describe('Server', function () {
@@ -23,7 +22,6 @@ describe('Server', function () {
             port: process.env.PORT
         }, (err, server) => {
             server.ping((err, data) => {
-                console.err(err)
                 assert.ok(!err)
                 done()
             })

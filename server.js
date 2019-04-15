@@ -1,20 +1,14 @@
 const micro = require('micro')
-const sleep = require('then-sleep')
-if (process.env.NOW == "1")
-    http = require("https")
-else
-    http = require("http")
+const http = require("http")
 
 const server = micro(async (req, res) => {
     return 'Hello world'
 })
 
-ping = (domain, port, cb) => {
-    http.get({
-        host: domain,
-        port: port,
-        path: '/'
-    }, (response) => {
+const ping = (domain, port, cb) => {
+    const url = process.env.NOW == "1" ? `http://${domain}:${port}`
+    console.log(url)
+    http.get(url, (response) => {
         let body = ''
         response.on('data', d => body += d)
         response.on('end', () => cb(null, body))
@@ -29,7 +23,7 @@ module.exports = {
     start: function ({ domain, port }, cb) {
         const err = null
 
-        server.listen(port, '0.0.0.0')
+        server.listen(port)
         server.ping = (cb2) => ping(domain, port, cb2)
 
         cb(err, server)

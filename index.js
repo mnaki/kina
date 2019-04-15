@@ -8,6 +8,7 @@ const mwDict = require('mw-dict')
 const search = require('youtube-search')
 const client = new Discord.Client()
 const he = require('he')
+const worder = require("worder")
 
 const env = process.env
 
@@ -21,13 +22,23 @@ client.on('ready', () => {
 })
 
 const PRUNE_STEP_TIME = 50
-
 const isMentioned = (msg, client) => msg.mentions.users.find(u => u.discriminator == client.user.discriminator)
-
 const limitText = (text, limit) => (text || "").split("").splice(0, limit).join("")
-
-
 const prefix = ".."
+const wordcloud = (words) => {
+    new Promise((resolve, reject) => {
+        unirest.post("https://wordcloudservice.p.rapidapi.com/generate_wc")
+               .header("X-RapidAPI-Host", "wordcloudservice.p.rapidapi.com")
+               .header("X-RapidAPI-Key", "SIGN-UP-FOR-KEY")
+               .header("Content-Type", "application/json")
+               .send({"f_type":"png","width":800,"height":500,"s_max":"7","s_min":"1","f_min":1,"r_color":"TRUE","r_order":"TRUE","s_fit":"FALSE","fixed_asp":"TRUE","rotate":"TRUE","textblock":"generate word cloud generate word cloud awesome great png jpg pdf awesome generate word cloud"})
+               .end(function (result) {
+                   console.log("WORDCLOUD RESULT :")
+                   console.log(result.status, result.headers, result.body);
+                   resolve()
+               });
+    })
+}
 
 const commands = {
     
@@ -208,7 +219,6 @@ const commands = {
             example: "Placeholder"
         },
         fun: (ctx) => {
-            
             ctx.msg.channel.fetchMessages({ limit: 3 })
             .then(messages => {
                 const urls = []
@@ -222,6 +232,25 @@ const commands = {
                 const url = urls.flat().reverse()[0]
                 ctx.msg.reply(`url = ${url}`)
             })
+        }
+    },
+    
+    wc: {
+        doc: {
+            description: "Wordcloud",
+            example: "wc [number]"
+        },
+        fun: (ctx) => {
+            const count = ctx.args[2]
+            ctx.msg.channel.fetchMessages({ limit: count })
+                           .then(messages => (
+                               messages.map(m => m.content)
+                                       .map((content) => (worder(content))).flat())
+                           )
+                           .then(wordcloud)
+                           .then((url) => {
+                               ctx.msg.channel.send(url)
+                           })
         }
     },
     
@@ -318,11 +347,13 @@ handle.start({ domain: env.NOW_URL || env.DOMAIN, port: env.PORT }, (err, server
     if (err) {
         console.error(err)
     }
-    /*setInterval(() => server.ping((err, data) => {
+    const ping = () => server.ping((err, data) => {
         if (err) {
             console.error(err)
         }
-    }), 1000 * 60 * 5)*/
+    })
+    ping()
+    setInterval(ping, 1000 * 60 * 5)
 })
 
 
