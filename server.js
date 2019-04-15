@@ -6,6 +6,7 @@ const server = micro(async (req, res) => {
 })
 
 const ping = (domain, port, cb) => {
+    /*
     const url = process.env.NOW == "1" ? `http://${domain}:${port}`
     console.log(url)
     http.get(url, (response) => {
@@ -16,6 +17,7 @@ const ping = (domain, port, cb) => {
     }).on('error', (err) => {
         cb(err)
     })
+    */
 }
 
 module.exports = {
