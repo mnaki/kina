@@ -25,16 +25,26 @@ module.exports = {
         const count = ctx.args[2]
         ctx.msg.channel.fetchMessages({ limit: count })
         .then(messages => messages.map(m => m.content).map((content) => (worder(content))).flat().join(' '))
-        .then(wordcloud)
-        .then((filename) => {
-            console.log("filename = %s", filename)
+        .then(async (text) => {
+
+            const embed = new Discord.RichEmbed()
+            .setTitle(`>Loading Word cloud`)
+            .setColor(0xFF0000)
+            
+            return [text, await ctx.msg.channel.send(embed)]
+        })
+        .then(async ([text, message]) => {
+            return [await wordcloud(text), await message]
+        })
+        .then(async ([filename, message]) => {
             
             const embed = new Discord.RichEmbed()
             .setTitle(`Word cloud`)
             .setColor(0xFFFFFF)
             .attachFile(filename)
             
-            ctx.msg.channel.send(embed)
+            await message.delete()
+            return ctx.msg.channel.send(embed)
         })
     }
 }
