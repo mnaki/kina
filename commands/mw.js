@@ -10,16 +10,17 @@ module.exports = {
         const dict = new mwDict.CollegiateDictionary(ctx.env.MW_COLLEGIATE_API_KEY)
         // const dict = new mwDict.LearnersDictionary(ctx.env.MW_LEARNER_API_KEY)
 
-        const embed = new Discord.RichEmbed().setTitle(`Searching Urban Dictionnary result for **${ctx.args[1]}**...`)
+        const query = ctx.args.slice(1).join(" ")
+        const embed = new Discord.RichEmbed().setTitle(`Searching Urban Dictionnary result for **${query}**...`)
         const msg = await ctx.msg.channel.send(embed)
         
-        dict.lookup(ctx.args[1])
+        dict.lookup(query)
         .then(results => {
             results = results.slice(0, 1)
             for (result of results) {
                 
                 const embed = new Discord.RichEmbed()
-                .setTitle(`Merriam-Webster's result for "${ctx.args[1]}"`)
+                .setTitle(`Merriam-Webster's result for "${query}"`)
                 .setColor(0xFFFFFF)
                 
                 embed.addField("Word", result.word || "N/A")
