@@ -44,16 +44,19 @@ const botEvent = async msg => {
     const args = sscanf(msg.content, prefix + '%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s')
     
     urls = linkify(msg.content)
+
+    const commands = commandManager.commands
     
     const ctx = {
         args,
         msg,
         urls,
-        env
+        env,
+        prefix,
+        commands
     }
     
     if (msg.content.startsWith(prefix)) {
-        const commands = commandManager.commands
         const fun = commands[args[0]].fun || commands["unknown"].fun
         try {
             fun(ctx)

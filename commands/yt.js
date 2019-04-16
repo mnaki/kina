@@ -2,8 +2,8 @@ const ytSearch = require('youtube-search')
 
 module.exports = {
     doc: {
-        description: "yt word",
-        example: "Youtube Search",
+        example: "yt word",
+        description: "Youtube Search",
     },
     fun: async (ctx) => {
         
@@ -36,10 +36,6 @@ module.exports = {
             } else {
                 msg.edit("No result found for `" + query + "`")
             }
-            
-            await ctx.msg.delete()
-
-            
             
         })
         

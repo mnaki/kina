@@ -2,8 +2,8 @@ const tcom = require('thesaurus-com')
 
 module.exports = {
     doc: {
-        description: "ant word",
-        example: "Thesaurus.com antonyms",
+        example: "ant word",
+        description: "Thesaurus.com antonyms",
     },
     fun: (ctx) => {
         const results = tcom.search(ctx.args[1]).antonyms

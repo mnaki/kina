@@ -1,13 +1,17 @@
 const mwDict = require('mw-dict')
+const Discord = require('discord.js')
 
 module.exports = {
     doc: {
-        description: "mw word",
-        example: "Merriam-Webster",
+        example: "mw word",
+        description: "Merriam-Webster",
     },
-    fun: (ctx) => {
+    fun: async (ctx) => {
         const dict = new mwDict.CollegiateDictionary(ctx.env.MW_COLLEGIATE_API_KEY)
         // const dict = new mwDict.LearnersDictionary(ctx.env.MW_LEARNER_API_KEY)
+
+        const embed = new Discord.RichEmbed().setTitle(`Searching Urban Dictionnary result for **${ctx.args[1]}**...`)
+        const msg = await ctx.msg.channel.send(embed)
         
         dict.lookup(ctx.args[1])
         .then(results => {
@@ -43,7 +47,7 @@ module.exports = {
                     
                 })
                 
-                ctx.msg.channel.send(embed)
+                msg.edit(embed)
             }
         })
         .catch(error => {
