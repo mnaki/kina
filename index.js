@@ -4,7 +4,7 @@ const Discord = require('discord.js')
 const sscanf = require('sscanf')
 const client = new Discord.Client()
 const CommandManager = require('./command-manager')
-const prefix = "!"
+const prefix = ","
 const env = process.env
 const isMentioned = (msg, client) => msg.mentions.users.find(u => u.discriminator == client.user.discriminator)
 const limitText = (text, limit) => (text || "").split("").splice(0, limit).join("")

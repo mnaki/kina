@@ -11,7 +11,7 @@ module.exports = {
         // const dict = new mwDict.LearnersDictionary(ctx.env.MW_LEARNER_API_KEY)
 
         const query = ctx.args.slice(1).join(" ")
-        const embed = new Discord.RichEmbed().setTitle(`Searching Urban Dictionnary result for **${query}**...`)
+        const embed = new Discord.RichEmbed().setTitle(`Searching Meriem Webster result for **${query}**...`)
         const msg = await ctx.msg.channel.send(embed)
         
         dict.lookup(query)
@@ -50,11 +50,6 @@ module.exports = {
                 
                 msg.edit(embed)
             }
-        })
-        .catch(error => {
-            discordLog(error)
-            ctx.msg.reply(error)
-            console.error(error)
         })
     }
 }
