@@ -7,9 +7,12 @@
   "dependencies": {
     "blockspring": "^0.0.6",
     "discord.js": "^11.4.2",
+    "duck-duck-scrape": "^1.0.3",
     "forever": "^1.0.0",
     "he": "^1.2.0",
     "http": "^0.0.0",
+    "lodash": "^4.17.11",
+    "markdown-escape": "^1.0.2",
     "micro": "^9.3.3",
     "mw-dict": "^3.0.0",
     "sscanf": "^0.8.0",

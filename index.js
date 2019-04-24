@@ -1,5 +1,6 @@
 #!/usr/local/bin/node
 
+const throttle = require('lodash/throttle')
 const Discord = require('discord.js')
 const sscanf = require('sscanf')
 const client = new Discord.Client()
@@ -11,17 +12,17 @@ const limitText = (text, limit) => (text || "").split("").splice(0, limit).join(
 
 const commandManager = new CommandManager()
 
-commandManager.load("ping")
+commandManager.load("emoji")
+commandManager.load("ddg")
 commandManager.load("help")
-commandManager.load("yt")
 commandManager.load("mw")
-commandManager.load("syn")
-commandManager.load("ant")
-commandManager.load("ud")
-commandManager.load("tineye")
-commandManager.load("wc")
+commandManager.load("ping")
 commandManager.load("prune")
+commandManager.load("tineye")
+commandManager.load("ud")
 commandManager.load("unknown")
+commandManager.load("wc")
+commandManager.load("yt")
 
 discordLog = (txt) => client.channels.get(env.DEV_CHANNEL).send('```' + txt + '```')
 linkify = text => text.match(/\bhttps?:\/\/\S+/gi)
@@ -31,16 +32,7 @@ client.on('ready', () => {
 })
 
 const botEvent = async msg => {
-    
-    if (msg.author.discriminator == client.user.discriminator) {
-        return
-    }
-    
-    if (isMentioned(msg, client)) {
-        msg.reply("WOOF WOOF")
-        return
-    }
-    
+        
     const args = sscanf(msg.content, prefix + '%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s')
     
     urls = linkify(msg.content)
@@ -70,7 +62,7 @@ const botEvent = async msg => {
 
 try {
     client.login(env.LOGIN_TOKEN)
-    client.on('message', botEvent)
+    client.on('message', throttle(botEvent, 100, { leading: true, trailing: true }))
 } catch (exc) {
     console.error(exc)
 }
