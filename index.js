@@ -5,7 +5,7 @@ const Discord = require('discord.js')
 const sscanf = require('sscanf')
 const client = new Discord.Client()
 const CommandManager = require('./command-manager')
-const prefix = ","
+const prefix = ">"
 const env = process.env
 const isMentioned = (msg, client) => msg.mentions.users.find(u => u.discriminator == client.user.discriminator)
 const limitText = (text, limit) => (text || "").split("").splice(0, limit).join("")
@@ -23,6 +23,8 @@ commandManager.load("ud")
 commandManager.load("unknown")
 commandManager.load("wc")
 commandManager.load("yt")
+commandManager.load("i")
+commandManager.load("h")
 
 discordLog = (txt) => client.channels.get(env.DEV_CHANNEL).send('```' + txt + '```')
 linkify = text => text.match(/\bhttps?:\/\/\S+/gi)
@@ -32,6 +34,10 @@ client.on('ready', () => {
 })
 
 const botEvent = async msg => {
+
+    if (msg.author.id != env.SNOWFLAKE) {
+        return
+    }
         
     const args = sscanf(msg.content, prefix + '%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s')
     
@@ -39,14 +45,7 @@ const botEvent = async msg => {
 
     const commands = commandManager.commands
     
-    const ctx = {
-        args,
-        msg,
-        urls,
-        env,
-        prefix,
-        commands
-    }
+    const ctx = { args, msg, urls, env, prefix, commands }
     
     if (msg.content.startsWith(prefix)) {
         const fun = commands[args[0]].fun || commands["unknown"].fun

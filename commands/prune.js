@@ -1,6 +1,6 @@
 module.exports = {
     doc: {
-        example: "prune number user snowflake",
+        example: "prune number [userID]",
         description: "Prune last X messages",
     },
     fun: async (ctx) => {

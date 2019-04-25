@@ -25,7 +25,7 @@ const emojiMap = {
     'x': ':regional_indicator_x:',
     'y': ':regional_indicator_y:',
     'z': ':regional_indicator_z:',
-    ' ': '    '
+    ' ': '   '
 }
 
 const toReact = (str) => {

@@ -15,27 +15,33 @@ module.exports = {
         description: "DuckDuckGo text search",
     },
     fun: async (ctx) => {
+
+        const query = ctx.args.slice(1).join(" ")
+        const embed = new Discord.RichEmbed().setTitle(`DuckDuckGo results for ${query} ...`)
+        const msg = await ctx.msg.channel.send(embed)
+
         try {
-                        
-            const query = ctx.args.slice(1).join(" ")
-            const embed = new Discord.RichEmbed().setTitle(`Searching Meriem Webster result for **${query}**...`)
-            const msg = await ctx.msg.channel.send(embed)
             
-            const results = await ddg.search(query + "\n\n", -2, "en")
+            const results = await ddg.search(query, -2)
+            console.log("%o", results)
             
             const final = results.slice(0, 3).map(r => {
-                const title = escapeMarkdown(r.title.slice(0, 80))
-                const description = escapeMarkdown(r.description.slice(0, 80))
-                return `**\`${title}\`**\n\n${r.url}\n\n\`${description}\``
-            }).join(`\n\n-----------------------------------\n\n`)
+                const title = escapeMarkdown(r.title.slice(0, 100))
+                const description = escapeMarkdown(r.description.slice(0, 200))
+                return `\n` + `**${title} | ${r.url}**\n${description}`
+            }).join(`\n\n─ ─ ─ ─ ─\n`)
 
-            embed.setTitle(`DuckDuckGo results for ${query}`)
+            embed.setTitle(`**DuckDuckGo results for ${escapeMarkdown(query)}**`)
                 .setDescription(final)
                 .setColor(0xFFFFFF)
             
             msg.edit(embed)
 
         } catch (error) {
+            embed.setTitle(`**DuckDuckGo error**`)
+                .setColor(0xFF0000)
+            msg.edit(embed)
+            ctx.msg.delete()
             console.log(error)
         }
     }
