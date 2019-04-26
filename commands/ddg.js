@@ -30,9 +30,9 @@ module.exports = {
             
             const final = results.slice(0, 3).map(r => {
                 const title = escapeMarkdown(r.title.slice(0, 100))
-                const description = escapeMarkdown(r.description.slice(0, 200))
-                return `\n` + `**${title} | ${r.url}**\n${description}`
-            }).join(`\n\n─ ─ ─ ─ ─\n`)
+                const description = escapeMarkdown(r.description.slice(0, 100))
+                return `\n` + `**─ [${title}](${r.url})**\n${description}...`
+            }).join(`\n\n`)
 
             embed.setTitle(`**DuckDuckGo results for ${escapeMarkdown(query)}**`)
                 .setDescription(final)

@@ -5,7 +5,7 @@ const Discord = require('discord.js')
 const sscanf = require('sscanf')
 const client = new Discord.Client()
 const CommandManager = require('./command-manager')
-const prefix = ">"
+const prefix = "'"
 const env = process.env
 const isMentioned = (msg, client) => msg.mentions.users.find(u => u.discriminator == client.user.discriminator)
 const limitText = (text, limit) => (text || "").split("").splice(0, limit).join("")
@@ -20,7 +20,7 @@ try {
     commandManager.load("prune")
     commandManager.load("tineye")
     commandManager.load("ud")
-    commandManager.load("unknown")
+    //commandManager.load("unknown")
     commandManager.load("wc")
     commandManager.load("yt")
     commandManager.load("i")
@@ -30,7 +30,12 @@ try {
     console.error(e)
 }
 
-discordLog = (txt) => client.channels.get(env.DEV_CHANNEL).send('```' + txt + '```')
+const util = require('util')
+discordLog = (txt) => {
+    const fmt = util.format("%o", txt)
+    console.log(fmt)
+    return client.channels.get(env.DEV_CHANNEL).send('```' + fmt + '```')
+}
 linkify = text => text.match(/\bhttps?:\/\/\S+/gi)
 
 client.on('ready', () => {
