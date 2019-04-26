@@ -15,7 +15,7 @@ module.exports = {
             const dict = new mwDict.CollegiateDictionary(ctx.env.MW_COLLEGIATE_API_KEY)
             // const dict = new mwDict.LearnersDictionary(ctx.env.MW_LEARNER_API_KEY)
             
-            const query = "fag"// ctx.args.slice(1).join(" ")
+            const query = ctx.args.slice(1).join(" ")
             const embed = new Discord.RichEmbed().setTitle(`Searching Meriem Webster result for **${query}**...`)
             const msg = await ctx.msg.channel.send(embed)
             

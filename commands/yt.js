@@ -25,14 +25,21 @@ module.exports = {
                 .setTitle("Searching `" + query + "`")
                 .setColor(0xFF0000)
 
-            const msg = await ctx.msg.channel.send(embed)
 
             ytSearch(query, opts, async (err, results) => {
+                ctx.log({results})
 
                 if (err)
                     return console.error(err)
 
-                const description = results.slice(0, opts.maxResults - 1).map(result => (`[${result.title}](${result.link})`)).join('\n\n')
+                const urls = results.map(r=>r.thumbnails.default.url)
+                ctx.log({urls})
+
+                const msg = await ctx.msg.channel.send(embed,
+                    //{ files: urls }
+                )
+                
+                const description = results.slice(0, opts.maxResults - 1).map(result => (`[${result.title}](${result.link}) \![](${result.thumbnails.default.url} "lol")`)).join('\n\n')
 
                 console.log("description = %o", description)
                 
