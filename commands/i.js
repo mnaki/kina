@@ -15,7 +15,7 @@ module.exports = {
     },
     fun: async (ctx) => {
 
-        const embed = new Discord.RichEmbed().setTitle(`>Fetching inspirational quote ...`)
+        const embed = new Discord.RichEmbed().setTitle(`Fetching inspirational quote ...`)
         const msg = await ctx.msg.channel.send(embed)
         
         setTimeout(() => {

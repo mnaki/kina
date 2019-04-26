@@ -15,7 +15,7 @@ module.exports = {
     },
     fun: async (ctx) => {
         try {
-            const embed = new Discord.RichEmbed().setTitle(`>Fetching Random Lyrics ...`)
+            const embed = new Discord.RichEmbed().setTitle(`Fetching Random Lyrics ...`)
             setTimeout(async () => {
                 const msg = await ctx.msg.channel.send(embed)
                 rl().then((result) => {
