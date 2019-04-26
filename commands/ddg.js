@@ -10,8 +10,11 @@ function escapeMarkdown(text) {
 }
 
 module.exports = {
+    aliases: [
+        "ddg"
+    ],
     doc: {
-        example: "ddg words",
+        exampleArgs: "words",
         description: "DuckDuckGo text search",
     },
     fun: async (ctx) => {

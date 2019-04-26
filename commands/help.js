@@ -1,8 +1,12 @@
 const Discord = require('discord.js')
 
 module.exports = {
+    aliases: [
+        "help",
+        "h"
+    ],
     doc: {
-        example: "help",
+        exampleArgs: "",
         description: "Displays this panel",
     },
     fun: (ctx) => {
@@ -13,12 +17,19 @@ module.exports = {
         .setTitle(`Command summary for ikan bot`)
         .setColor(0xFFFFFF)
         
+        const names = {}
         for (let i in commands) {
-            console.log("commands[i].doc.description = %s", commands[i].doc.description)
-            const description = commands[i].doc.description
-            const example = commands[i].doc.example
-            if (!!description && !!example) {
-                embed.addField(description, ctx.prefix + example, false)
+            console.log("command = %o", commands[i])
+            const name = commands[i].name
+            if (!names[name]) {
+                console.log("commands[i].doc.description = %s", commands[i].doc.description)
+                const description = commands[i].doc.description
+                const exampleArgs = commands[i].doc.exampleArgs
+                const aliases = commands[i].aliases.join("|")
+                if (!!description) {
+                    embed.addField(description, "`" + ctx.prefix + aliases + " " + exampleArgs + "`", false)
+                }
+                names[name] = name
             }
         }
         

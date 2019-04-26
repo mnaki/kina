@@ -20,7 +20,7 @@ const wordcloud = async (text) => {
 module.exports = {
     doc: {
         description: "Wordcloud (WIP)",
-        example: "wc number"
+        exampleArgs: "number"
     },
     fun: async (ctx) => {
         const count = ctx.args[2]

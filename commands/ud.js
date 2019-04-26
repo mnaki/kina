@@ -2,8 +2,11 @@ const ud = require('urban-dictionary')
 const Discord = require('discord.js')
 
 module.exports = {
+    aliases: [
+        "ud"
+    ],
     doc: {
-        example: "ud word",
+        exampleArgs: "word",
         description: "Urban dictionary definition",
     },
     fun: async (ctx) => {

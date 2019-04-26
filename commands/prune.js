@@ -1,6 +1,10 @@
 module.exports = {
+    aliases: [
+        "prune",
+        "clean"
+    ],
     doc: {
-        example: "prune number [userID]",
+        exampleArgs: "count userID*",
         description: "Prune last X messages",
     },
     fun: async (ctx) => {

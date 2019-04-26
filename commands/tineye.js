@@ -1,6 +1,10 @@
 module.exports = {
+    aliases: [
+        "te",
+        "tineye"
+    ],
     doc: {
-        description: "",
+        exampleArgs: "",
         example: "Placeholder"
     },
     fun: (ctx) => {

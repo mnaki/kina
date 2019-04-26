@@ -3,8 +3,14 @@ const Discord = require('discord.js')
  
 
 module.exports = {
+    aliases: [
+        "i",
+        "inspi",
+        "inspiration",
+        "inspirational"
+    ],
     doc: {
-        example: "i",
+        exampleArgs: "",
         description: "Get inspirational quotes",
     },
     fun: async (ctx) => {

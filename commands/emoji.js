@@ -39,8 +39,12 @@ const toReact = (str) => {
 }
 
 module.exports = {
+    aliases: [
+        "emoji",
+        "e"
+    ],
     doc: {
-        example: "emoji words",
+        exampleArgs: "words",
         description: "Emoji letters",
     },
     fun: async (ctx) => {
@@ -51,7 +55,7 @@ module.exports = {
         const react = toReact(content)
         setTimeout(() => {
             msg.edit(react)
-        }, 100)
+        }, 500)
 
     }
 }

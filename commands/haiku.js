@@ -3,12 +3,13 @@ const Haikufy = require('haikufy');
 
 const haikufy = new Haikufy();
 
-
-
-
 module.exports = {
+    aliases: [
+        "hai",
+        "haiku"
+    ],
     doc: {
-        example: "haiku words",
+        exampleArgs: "words",
         description: "Haiku extractor",
     },
     fun: async (ctx) => {

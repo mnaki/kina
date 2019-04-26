@@ -1,6 +1,10 @@
 module.exports = {
+    aliases: [
+        "ping",
+        "p"
+    ],
     doc: {
-        example: "ping",
+        exampleArgs: "",
         description: "Ping pong",
     },
     fun: (ctx) => {

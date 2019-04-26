@@ -2,8 +2,11 @@ const mwDict = require('mw-dict')
 const Discord = require('discord.js')
 
 module.exports = {
+    aliases: [
+        "mw"
+    ],
     doc: {
-        example: "mw word",
+        exampleArgs: "word",
         description: "Merriam-Webster",
     },
     fun: async (ctx) => {
