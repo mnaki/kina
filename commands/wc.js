@@ -18,6 +18,10 @@ const wordcloud = async (text) => {
 
 
 module.exports = {
+    aliases: [
+        "wc",
+        "wordcloud"
+    ],
     doc: {
         description: "Wordcloud (WIP)",
         exampleArgs: "number"
@@ -35,7 +39,9 @@ module.exports = {
         .then(messages => messages.map(m => m.content).map((content) => (worder(content))).flat().join(' '))
         .then(wordcloud)
         .then(async (filename) => {
-            message.delete()
+            setTimeout(() => message.delete(), 250)
+            setTimeout(() => ctx.msg.delete(), 500)
+            
             ctx.msg.channel.send("", { files: [
                 filename
             ]})

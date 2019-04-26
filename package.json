@@ -17,6 +17,8 @@
     "markdown-escape": "^1.0.2",
     "micro": "^9.3.3",
     "mw-dict": "^3.0.0",
+    "random-lyrics": "^1.0.0",
+    "sanitize-html": "^1.20.1",
     "sscanf": "^0.8.0",
     "svg-to-png": "^4.0.0",
     "then-sleep": "^1.0.1",

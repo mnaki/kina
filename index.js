@@ -11,20 +11,24 @@ const isMentioned = (msg, client) => msg.mentions.users.find(u => u.discriminato
 const limitText = (text, limit) => (text || "").split("").splice(0, limit).join("")
 
 const commandManager = new CommandManager()
-
-commandManager.load("emoji")
-commandManager.load("ddg")
-commandManager.load("help")
-commandManager.load("mw")
-commandManager.load("ping")
-commandManager.load("prune")
-commandManager.load("tineye")
-commandManager.load("ud")
-commandManager.load("unknown")
-commandManager.load("wc")
-commandManager.load("yt")
-commandManager.load("i")
-commandManager.load("h")
+try {
+    commandManager.load("emoji")
+    commandManager.load("ddg")
+    commandManager.load("help")
+    commandManager.load("mw")
+    commandManager.load("ping")
+    commandManager.load("prune")
+    commandManager.load("tineye")
+    commandManager.load("ud")
+    commandManager.load("unknown")
+    commandManager.load("wc")
+    commandManager.load("yt")
+    commandManager.load("i")
+    commandManager.load("haiku")
+    commandManager.load("rl")
+} catch (e) {
+    console.error(e)
+}
 
 discordLog = (txt) => client.channels.get(env.DEV_CHANNEL).send('```' + txt + '```')
 linkify = text => text.match(/\bhttps?:\/\/\S+/gi)
@@ -45,15 +49,15 @@ const botEvent = async msg => {
 
     const commands = commandManager.commands
     
-    const ctx = { args, msg, urls, env, prefix, commands }
+    const ctx = { args, msg, urls, env, prefix, commands, log: discordLog }
     
     if (msg.content.startsWith(prefix)) {
         const fun = commands[args[0]].fun || commands["unknown"].fun
         try {
             fun(ctx)
         } catch (error) {
-            discordLog(exc)
             console.error(error)
+            discordLog(exc)
         }
     }
     
