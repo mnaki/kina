@@ -66,7 +66,7 @@ module.exports = {
         } catch(e) {
             ctx.log(e)
         } finally {
-            ctx.msg.delete()
+            //ctx.msg.delete()
         }
     }
     

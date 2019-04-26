@@ -11,7 +11,7 @@ module.exports = {
     },
     fun: async (ctx) => {
         
-        const query = ctx.args.slice(1).join(" ")
+        const query = ctx.query
         const embed = new Discord.RichEmbed().setTitle(`Searching Urban Dictionnary result for **${query}**...`)
         const msg = await ctx.msg.channel.send(embed)
 

@@ -50,7 +50,7 @@ module.exports = {
     fun: async (ctx) => {
 
         const msg = ctx.msg
-        const query = ctx.args.slice(1).join(" ")
+        const query = ctx.query
         const content = query.toLowerCase()
         const react = toReact(content)
         setTimeout(() => {

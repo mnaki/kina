@@ -7,7 +7,7 @@ const path = require('path')
 
 const wordcloud = async (text) => {
     return new Promise(async (resolve, reject) => {
-        blockspring.runParsed("98203ea3afcaccbd3daf7b68e2183957", { "text": text, "width": 500, "height": 400, "rotate_flag": true, "min_freq": 0 }, { api_key: "br_108841_c340f1865696044fec6bfc698e1935bce126cbc5"}, async function (res) {
+        blockspring.runParsed("8fa1781a0afcde79db38040bd83b47c2", { "text": text, "width": 300, "height": 300, "rotate_flag": false, "min_freq": 0, fontName: "Verdana" }, { api_key: "br_108841_89c667c1e75185823b47ad316a84a1200d1ee0e9"}, async function (res) {
             const inputFilePath = res.params.image
             await svg_to_png.convert(inputFilePath, "output")
             const outputFilePath = path.join(__dirname, "..", "output", path.basename(inputFilePath)).replace(/\.[^\.]+$/, '.png')
@@ -15,7 +15,6 @@ const wordcloud = async (text) => {
         })
     })
 }
-
 
 module.exports = {
     aliases: [
@@ -39,8 +38,8 @@ module.exports = {
         .then(messages => messages.map(m => m.content).map((content) => (worder(content))).flat().join(' '))
         .then(wordcloud)
         .then(async (filename) => {
-            setTimeout(() => message.delete(), 250)
-            setTimeout(() => ctx.msg.delete(), 500)
+            //setTimeout(() => message.delete(), 250)
+            //setTimeout(() => ctx.msg.delete(), 500)
             
             ctx.msg.channel.send("", { files: [
                 filename

@@ -14,7 +14,7 @@ module.exports = {
     },
     fun: async (ctx) => {
         try {
-            const query = ctx.args.slice(1).join(" ")
+            const query = ctx.query
             const text = haikufy.find(query);
             setTimeout(() => {
                 console.log(text)

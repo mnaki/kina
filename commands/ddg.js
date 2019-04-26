@@ -19,7 +19,7 @@ module.exports = {
     },
     fun: async (ctx) => {
 
-        const query = ctx.args.slice(1).join(" ")
+        const query = ctx.query
         const embed = new Discord.RichEmbed().setTitle(`DuckDuckGo results for ${query} ...`)
         const msg = await ctx.msg.channel.send(embed)
 
@@ -44,7 +44,7 @@ module.exports = {
             embed.setTitle(`**DuckDuckGo error**`)
                 .setColor(0xFF0000)
             msg.edit(embed)
-            ctx.msg.delete()
+            //ctx.msg.delete()
             console.log(error)
         }
     }

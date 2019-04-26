@@ -10,6 +10,10 @@ const env = process.env
 const isMentioned = (msg, client) => msg.mentions.users.find(u => u.discriminator == client.user.discriminator)
 const limitText = (text, limit) => (text || "").split("").splice(0, limit).join("")
 
+function strip(str) {
+    return str.replace(/^\s+|\s+$/g, '');
+}
+
 const commandManager = new CommandManager()
 try {
     commandManager.load("emoji")
@@ -26,6 +30,7 @@ try {
     commandManager.load("i")
     commandManager.load("haiku")
     commandManager.load("rl")
+    commandManager.load("yts")
 } catch (e) {
     console.error(e)
 }
@@ -43,29 +48,31 @@ client.on('ready', () => {
 })
 
 const botEvent = async msg => {
-
-    if (msg.author.id != env.SNOWFLAKE) {
-        return
-    }
-        
-    const args = sscanf(msg.content, prefix + '%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s')
-    
-    urls = linkify(msg.content)
-
-    const commands = commandManager.commands
-    
-    const ctx = { args, msg, urls, env, prefix, commands, log: discordLog }
-    
-    if (msg.content.startsWith(prefix)) {
-        const fun = commands[args[0]].fun || commands["unknown"].fun
-        try {
-            fun(ctx)
-        } catch (error) {
-            console.error(error)
-            discordLog(exc)
+    try {
+        if (msg.author.id != env.SNOWFLAKE) {
+            return
         }
+
+        urls = linkify(msg.content)
+            
+        const args = sscanf(msg.content, prefix + '%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s')
+        const commands = commandManager.commands
+        const query = strip(args.slice(1).join(" "))
+        
+        const ctx = { args, msg, urls, env, prefix, commands, query, log: discordLog }
+        
+        if (msg.content.startsWith(prefix)) {
+            const fun = commands[args[0]].fun || commands["unknown"].fun
+            try {
+                fun(ctx)
+            } catch (error) {
+                console.error(error)
+                discordLog(exc)
+            }
+        }
+    } catch(e) {
+        discordLog(e)
     }
-    
 }
 
 try {

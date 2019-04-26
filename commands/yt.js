@@ -7,50 +7,31 @@ module.exports = {
         "youtube"
     ],
     doc: {
-        example: "yt query",
+        example: "query",
         description: "Youtube Search",
     },
     fun: async (ctx) => {
         try {
         
             const opts = {
-                maxResults: 4,
+                maxResults: 1,
                 key: ctx.env.YOUTUBE_API_KEY
             }
 
             
-            const query = ctx.args.slice(1).join(" ")
-            
-            const embed = new Discord.RichEmbed()
-                .setTitle("Searching `" + query + "`")
-                .setColor(0xFF0000)
-
+            const query = ctx.query
+            ctx.msg.edit(query + "...")
 
             ytSearch(query, opts, async (err, results) => {
-                ctx.log({results})
-
                 if (err)
                     return console.error(err)
-
-                const urls = results.map(r=>r.thumbnails.default.url)
-                ctx.log({urls})
-
-                const msg = await ctx.msg.channel.send(embed,
-                    //{ files: urls }
-                )
-                
-                const description = results.slice(0, opts.maxResults - 1).map(result => (`[${result.title}](${result.link}) \![](${result.thumbnails.default.url} "lol")`)).join('\n\n')
-
-                console.log("description = %o", description)
                 
                 if (results.length > 0) {
-                    embed.setTitle("Search results for " + query)
-                    embed.setDescription(description)
-                    msg.edit(embed)
+                    const result = results[0]
+                    ctx.msg.edit(result.link)
                 } else {
-                    msg.delete()
+                    //ctx.msg.delete()
                 }
-                
             })
             
         } catch (e) {
