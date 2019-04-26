@@ -1,6 +1,10 @@
 const mwDict = require('mw-dict')
 const Discord = require('discord.js')
 
+function strip(str) {
+    return str.replace(/^\s+|\s+$/g, '');
+}
+
 module.exports = {
     aliases: [
         "mw"
@@ -15,13 +19,12 @@ module.exports = {
             const dict = new mwDict.CollegiateDictionary(ctx.env.MW_COLLEGIATE_API_KEY)
             // const dict = new mwDict.LearnersDictionary(ctx.env.MW_LEARNER_API_KEY)
             
-            const query = ctx.args.slice(1).join(" ")
+            const query = strip(ctx.args[1])
             const embed = new Discord.RichEmbed().setTitle(`Searching Meriem Webster result for **${query}**...`)
             const msg = await ctx.msg.channel.send(embed)
             
             const results = await dict.lookup(query)
 
-            ctx.log({results})
             
             results.slice(0, 1).map(async (result) => {
                 
