@@ -2690,6 +2690,10 @@ semver@^5.0.3, semver@^5.1.0, semver@^5.3.0, semver@^5.5.0:
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.0.tgz#790a7cf6fea5459bac96110b29b60412dc8ff96b"
 
+sentiment@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/sentiment/-/sentiment-5.0.1.tgz#425030b2e8564281bb6f239e31dac4761315362e"
+
 set-blocking@^2.0.0, set-blocking@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/set-blocking/-/set-blocking-2.0.0.tgz#045f9782d011ae9a6803ddd382b24392b3d890f7"

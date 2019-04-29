@@ -31,6 +31,7 @@ try {
     commandManager.load("haiku")
     commandManager.load("rl")
     commandManager.load("yts")
+    commandManager.load("sentiment")
 } catch (e) {
     console.error(e)
 }
